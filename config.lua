@@ -1,4 +1,4 @@
-isEquaEnable=true
+isEquaEnable=false
 
 mode=0		--ランディングギア初期位置　0：Down　1：Up
 modev=0		--初期モード　0：飛行機モード　1：VTOLモード
