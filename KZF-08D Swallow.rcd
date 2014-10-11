@@ -575,16 +575,16 @@ Body{
   }
 }
 Lua{
-require("Ray/Model/F8/config.lua")
+require("Ray/Model/KZF-08/config.lua")
 if isEquaEnable then
 	require "Boot"{
-		"Ray/Model/F8",
+		"Ray/Model/KZF-08",
 		"Ray/Graphic",
 	}
 	require("siruhu/stdlib.lua")
 	require("cel/BasePhysic.lua")
 else
-	require("Ray/Model/F8/boot.lua")
+	require("Ray/Model/KZF-08/boot.lua")
 	if loadlib~=nil then
 		loadlib("Spirytus.DLL", "rc_OpenSpirytus")()
 	end
@@ -626,7 +626,7 @@ function main()
 		if _KEY(9)>0 then
 			keylong.func=keylong.func+1
 		end
-		if _KEY(16)>0 and _VZ()>-2 then
+		if _KEY(16)>0 and math.abs(_VZ())<2 and mode==0 then
 			keylong.brake=keylong.brake+1
 		end
 	else
