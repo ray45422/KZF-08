@@ -73,7 +73,7 @@ function Plane()
 			if _VZ()*-3.6<600 then
 				v1=v*hikeolib.limit(math.abs(70/_VZ()),1,2)
 			else
-				v1=v/(1.4*math.abs(_VZ()/200))
+				v1=v/math.abs(_VZ()/200)
 			end
 		end
 		local v2=v1
