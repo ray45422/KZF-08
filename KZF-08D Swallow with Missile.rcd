@@ -51,6 +51,14 @@ Val{
   JETVLR(default=0,min=-30000,max=30000,disp=0)
   JETVLR2(default=0,min=-15000,max=15000,disp=0)
   JETVR(default=0,min=-50000,max=780000,disp=0)
+  M_ARM1(default=0,max=500000)
+  M_ARM2(default=0,max=500000)
+  M_JET1(default=0,max=100000,disp=0)
+  M_JET2(default=0,max=100000,disp=0)
+  M_P1(default=0,min=-20,max=20,step=5)
+  M_P2(default=0,min=-20,max=20,step=5)
+  M_Y1(default=0,min=-20,max=20,step=5)
+  M_Y2(default=0,min=-20,max=20,step=5)
   SPR(default=0.8,min=0.8,max=1,disp=0)
   WANG(default=5,min=5,max=95,disp=0)
   WANGLE1(default=10,min=10,max=40,disp=0)
@@ -511,6 +519,31 @@ Body{
                       }
                     }
                     S:Cowl(color=COL){}
+                    S:Frame(angle=45){
+                      S:Frame(angle=-45){
+                        N:Chip(name=MISS1){
+                          S:Chip(angle=M_P1){}
+                          N:Frame(angle=-150,option=1){
+                            N:Jet(angle=-120,power=M_JET1,effect=1){}
+                          }
+                          N:Frame(option=1){
+                            S:Trim(angle=90){
+                              S:Chip(angle=M_Y1){}
+                            }
+                            N:Frame(angle=150,option=1){
+                              N:Frame(angle=120){
+                                S:Arm(angle=90,power=M_ARM1,option=500000){}
+                                W:Arm(angle=90,power=M_ARM1,option=500000){}
+                                N:Arm(angle=90,power=M_ARM1,option=500000){}
+                                E:Arm(angle=90,power=M_ARM1,option=500000){}
+                              }
+                            }
+                          }
+                          S:Rudder(angle=60){}
+                          S:Rudder(angle=-60){}
+                        }
+                      }
+                    }
                   }
                   N:Cowl(color=COL){}
                   S:Cowl(color=COL){}
@@ -530,6 +563,31 @@ Body{
                       W:Cowl(angle=180,color=COL){
                         W:Cowl(color=COL){
                           W:Cowl(color=COL){}
+                        }
+                      }
+                    }
+                    S:Frame(angle=45,option=1){
+                      S:Frame(angle=-45,option=1){
+                        N:Chip(name=MISS2){
+                          S:Chip(angle=M_P2){}
+                          N:Frame(angle=-150,option=1){
+                            N:Jet(angle=-120,power=M_JET2,effect=1){}
+                          }
+                          N:Frame(option=1){
+                            S:Trim(angle=90){
+                              S:Chip(angle=M_Y2){}
+                            }
+                            N:Frame(angle=150,option=1){
+                              N:Frame(angle=120){
+                                S:Arm(angle=90,power=M_ARM2,option=500000){}
+                                W:Arm(angle=90,power=M_ARM2,option=500000){}
+                                N:Arm(angle=90,power=M_ARM2,option=500000){}
+                                E:Arm(angle=90,power=M_ARM2,option=500000){}
+                              }
+                            }
+                          }
+                          S:Rudder(angle=60){}
+                          S:Rudder(angle=-60){}
                         }
                       }
                     }
@@ -593,7 +651,7 @@ end
 if _SETLIMITVELOCITY~= nil then
 	spi=true
 	_SETLIMITVELOCITY(0, 700)
-	_SETLIMITVELOCITY(1, 740)
+	_SETLIMITVELOCITY(1, 720)
 end
 
 for i=1,_CHIPS() do
@@ -601,6 +659,8 @@ for i=1,_CHIPS() do
 	bodyData[i]={x/0.6,z/0.6,_AX(i-1),_AY(i-1)-_AY(),_AZ(i-1),i-1}
 end
 core_m=BasePhysic.new(0)
+mmmmmm=0
+mmmmmmm=0
 function main()
 	p_date()
 	core_m:Renew()
@@ -688,7 +748,20 @@ function main()
 		sminov_OnFrame()
 	end
 	arm_ctrl()
-	reticle(0,HUD,0.015,"",0,0.13,0.5)
+	for i=1,armament_num do
+		if miss_lunch[i][1]==1 then
+			local miss=_G["MISS"..i]
+			_SPLIT(miss)
+			_G["M_JET"..i]=100000
+			local v=(740+_VZ())/740
+			local pitch,roll,yaw,rtime,speed,len,trigger=follow(miss,miss_lunch[i][2],{v,v,v*0.5},1)
+			_G["M_P"..i]=pitch
+			_G["M_Y"..i]=yaw
+			if len+_VZ(miss)/_BASE()<=10 or miss_lunch[i][3]==1 then
+				_G["M_ARM"..i]=500000
+			end
+		end
+	end
 end
 
 _ZOOM(45)

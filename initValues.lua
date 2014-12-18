@@ -15,3 +15,10 @@ sminov=1
 spi=false
 setting={0,0}
 bodyData={}
+armament_num=2
+armament_select=0
+btm=0
+miss_lunch={}
+for i=1,armament_num do
+	miss_lunch[i]={0,0,0}
+end

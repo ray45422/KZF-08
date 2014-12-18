@@ -12,7 +12,7 @@ function MainSystem()
 			modeap=1-modeap
 		end
 		if _KEYDOWN(12)>0 then
-			hudm=1-hudm
+			btlm=1-btlm
 		end
 		if _KEYDOWN(13)>0 then
 			modeo=1-modeo
@@ -29,7 +29,7 @@ function MainSystem()
 		end
 	else
 		if _KEY(7)>0 then
-			arm()
+			--arm()
 		else
 			GUN1=0 GUN2=0
 		end
@@ -39,7 +39,7 @@ function MainSystem()
 		if _KEYDOWN(13)>0 then
 			setlim=1-setlim
 		end
-		if _KEYDOWN(14)>0 then
+		if _KEYDOWN(14)>0@and btlm==0 then
 			modea=1-modea
 		end
 		if _KEY(16)>0 then
@@ -294,7 +294,7 @@ function MainSystem()
 		hud_all(0,HUD,0.03,n,{x=0,y=0.08,col="FF00"})
 	end
 	if hudlevel>=1 then
-		basicmoniter3D(0,HUD,0.8,"FF00",0,0.08,{hudm,g=G,ammo=ammo,gear=mode})
+		basicmoniter3D(0,HUD,0.8,"FF00",0,0.08,{btlm,g=G,ammo=ammo,gear=mode})
 	end
 end
 
@@ -425,22 +425,6 @@ function Print()
 	out(11,string.format("Flight distance%.2fkm",length/1000))
 	out(9,string.format("%2.1fG",G))
 	out(12,string.format("X=%.2f Y=%.2f Z=%.2f",_X(),_Y(),_Z()))
-end
-
-function arm()
-	if ammo>0 then
-		if math.mod(_TICKS(),2)==0 then
-			GUN1=GUN1+10000
-		else
-			GUN2=GUN2+10000
-		end
-	else
-		GUN1=0
-		GUN2=0
-	end
-	if _E(ARM1)==0 or _E(ARM2)==0 then
-		ammo=ammo-1
-	end
 end
 
 function secret()
