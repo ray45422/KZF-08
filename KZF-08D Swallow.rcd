@@ -589,7 +589,8 @@ else
 		loadlib("Spirytus.DLL", "rc_OpenSpirytus")()
 	end
 end
-
+armament_num=0
+armament_name={"10k ARMx2"}
 if _SETLIMITVELOCITY~= nil then
 	spi=true
 	_SETLIMITVELOCITY(0, 700)
