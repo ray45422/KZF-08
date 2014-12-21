@@ -36,6 +36,8 @@ function arm_ctrl()
 						miss_lunch[i][3]=1
 					else
 						miss_lunch[i]={1,n,0}
+						armament_select=selecter(armament_select+1,armament_num)
+						break
 					end
 				end
 			end

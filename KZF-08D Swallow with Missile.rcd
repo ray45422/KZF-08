@@ -748,16 +748,36 @@ function main()
 		sminov_OnFrame()
 	end
 	arm_ctrl()
+	--[[gx,gy,gz=local3DPos2(_GX(),_GY(),_GZ(),0)
+	if _KEY(0)>0 or _KEY(1)>0 then
+		ANGLE2=ANGLE2-gx*5
+		ANGLE3=ANGLE3-gx*5
+	end
+	out(15,gx)
+	out(16,gy)
+	out(17,gz)
+	_MOVE3D(_X()+gx+5,_Y()+gy,_Z()+gz)
+	_LINE3D(_X()+gx-5,_Y()+gy,_Z()+gz)
+	_MOVE3D(_X()+gx,_Y()+gy+5,_Z()+gz)
+	_LINE3D(_X()+gx,_Y()+gy-5,_Z()+gz)
+	_MOVE3D(_X()+gx,_Y()+gy,_Z()+gz+5)
+	_LINE3D(_X()+gx,_Y()+gy,_Z()+gz-5)]]
 	for i=1,armament_num do
 		if miss_lunch[i][1]==1 then
 			local miss=_G["MISS"..i]
 			_SPLIT(miss)
-			_G["M_JET"..i]=100000
 			local v=(740+_VZ())/740
-			local pitch,roll,yaw,rtime,speed,len,trigger=follow(miss,miss_lunch[i][2],{v,v,v*0.5},1)
+			local pitch,roll,yaw,rtime,speed,len,trigger=follow(miss,miss_lunch[i][2],{v,v*0.8,v*0.8},0)
 			_G["M_P"..i]=pitch
 			_G["M_Y"..i]=yaw
+			if miss_lunch[i][3]==2 then
+				_G["M_ARM"..i]=0
+				_G["M_JET"..i]=0
+			else
+				_G["M_JET"..i]=100000
+			end
 			if len+_VZ(miss)/_BASE()<=10 or miss_lunch[i][3]==1 then
+				miss_lunch[i][3]=2
 				_G["M_ARM"..i]=500000
 			end
 		end
