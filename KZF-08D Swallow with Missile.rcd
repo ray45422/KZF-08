@@ -505,7 +505,7 @@ Body{
                   W:Chip(color=COL){
                     W:Frame(angle=-WANG,option=1){
                       S:Chip(angle=-ANGLE3,color=COL){
-                        W:Chip(color=COL){}
+                        W:Chip(color=COL,name=WL1){}
                       }
                       E:Rudder(angle=150,color=COL){
                         E:Cowl(color=COL){}
@@ -519,8 +519,8 @@ Body{
                       }
                     }
                     S:Cowl(color=COL){}
-                    S:Frame(angle=45){
-                      S:Frame(angle=-45){
+                    S:Frame(angle=45,option=1){
+                      S:Frame(angle=-45,option=1){
                         N:Chip(name=MISS1){
                           S:Chip(angle=M_P1){}
                           N:Frame(angle=-150,option=1){
@@ -552,7 +552,7 @@ Body{
                   E:Chip(color=COL){
                     E:Frame(angle=-WANG,option=1){
                       S:Chip(angle=ANGLE2,color=COL){
-                        E:Chip(color=COL){}
+                        E:Chip(color=COL,name=WR1){}
                       }
                       W:Rudder(angle=-150,color=COL){
                         W:Cowl(color=COL){}
@@ -641,11 +641,16 @@ if isEquaEnable then
 	}
 	require("siruhu/stdlib.lua")
 	require("cel/BasePhysic.lua")
+	wl1_c=ray.line3D.contrail:new(WL1)
+	wr1_c=ray.line3D.contrail:new(WR1)
 else
 	require("Ray/Model/KZF-08/boot.lua")
 	if loadlib~=nil then
 		loadlib("Spirytus.DLL", "rc_OpenSpirytus")()
 	end
+	wl1_m=BasePhysic.new(WL1)
+	wr1_m=BasePhysic.new(WR1)
+	kumo={{},{}}
 end
 armament_num=2
 armament_name={
@@ -669,6 +674,14 @@ mmmmmmm=0
 function main()
 	p_date()
 	core_m:Renew()
+	if isEquaEnable then
+		wr1_c:tick()
+		wl1_c:tick()
+	else
+		wr1_m:Renew()
+		wl1_m:Renew()
+		cloud()
+	end
 	if setlim==1 then
 		limG=limitG
 	else
@@ -770,12 +783,14 @@ function main()
 	for i=1,armament_num do
 		if miss_lunch[i][1]==1 then
 			if miss_lunch[i][4]==30 then
-				if miss_lunch[i][3]==0 then
+				if miss_lunch[i][3]==0 and _PLAYERS()>0 then
 					local miss=_G["MISS"..i]
 					local v=(740+_VZ())/740
 					local pitch,roll,yaw,rtime,speed,len,trigger=follow(miss,miss_lunch[i][2],{v,v*0.8,v*0.8},0)
 					_G["M_P"..i]=pitch
 					_G["M_Y"..i]=yaw
+				else
+					len=1000
 				end
 				if miss_lunch[i][3]==2 then
 					_G["M_ARM"..i]=0

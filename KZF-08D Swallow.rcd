@@ -497,7 +497,7 @@ Body{
                   W:Chip(color=COL){
                     W:Frame(angle=-WANG,option=1){
                       S:Chip(angle=-ANGLE3,color=COL){
-                        W:Chip(color=COL){}
+                        W:Chip(color=COL,name=WL1){}
                       }
                       E:Rudder(angle=150,color=COL){
                         E:Cowl(color=COL){}
@@ -519,7 +519,7 @@ Body{
                   E:Chip(color=COL){
                     E:Frame(angle=-WANG,option=1){
                       S:Chip(angle=ANGLE2,color=COL){
-                        E:Chip(color=COL){}
+                        E:Chip(color=COL,name=WR1){}
                       }
                       W:Rudder(angle=-150,color=COL){
                         W:Cowl(color=COL){}
@@ -583,11 +583,16 @@ if isEquaEnable then
 	}
 	require("siruhu/stdlib.lua")
 	require("cel/BasePhysic.lua")
+	wl1_c=ray.line3D.contrail:new(WL1)
+	wr1_c=ray.line3D.contrail:new(WR1)
 else
 	require("Ray/Model/KZF-08/boot.lua")
 	if loadlib~=nil then
 		loadlib("Spirytus.DLL", "rc_OpenSpirytus")()
 	end
+	wl1_m=BasePhysic.new(WL1)
+	wr1_m=BasePhysic.new(WR1)
+	kumo={{},{}}
 end
 armament_num=0
 armament_name={"10k ARMx2"}
@@ -602,9 +607,18 @@ for i=1,_CHIPS() do
 	bodyData[i]={x/0.6,z/0.6,_AX(i-1),_AY(i-1)-_AY(),_AZ(i-1),i-1}
 end
 core_m=BasePhysic.new(0)
+
 function main()
 	p_date()
 	core_m:Renew()
+	if isEquaEnable then
+		wr1_c:tick()
+		wl1_c:tick()
+	else
+		wr1_m:Renew()
+		wl1_m:Renew()
+		cloud()
+	end
 	if setlim==1 then
 		limG=limitG
 	else
@@ -689,7 +703,7 @@ function main()
 		sminov_OnFrame()
 	end
 	arm_ctrl()
-	reticle(0,HUD,0.015,"",0,0.13,0.5)
+	--reticle(0,HUD,0.015,"",0,0.13,0.5)
 end
 
 _ZOOM(45)

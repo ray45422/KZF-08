@@ -149,9 +149,9 @@ function MainSystem()
 		else
 			local angle1_tmp,angle2_tmp,jang2_tmp,rtime,len,trigger
 			if modek==2 then
-				angle1_tmp,angle2_tmp,jang2_tmp,speed2,rtime,len,trigger=follow(0,n,{5,0.5,0.5},1,{name=formationName,n=formationNumber,y=5,z=-30})
+				angle1_tmp,angle2_tmp,jang2_tmp,speed2,rtime,len,trigger=follow(0,n,{5,1,0.5},0,{name=formationName,n=formationNumber,y=5,z=-30})
 			elseif modek==3 then
-				angle1_tmp,angle2_tmp,jang2_tmp,speed2,rtime,len,trigger=follow(0,n,{5,0.5,0.5},1)
+				angle1_tmp,angle2_tmp,jang2_tmp,speed2,rtime,len,trigger=follow(0,n,{5,1,0.5},0)
 			end
 			if len>30 then
 				speed2=speed2*3.6+(len-30)*5
@@ -161,11 +161,7 @@ function MainSystem()
 				if speed2+_VZ()*3.6<-20 then ABRAKE=ABRAKE+1 end
 			end
 			if spi then
-				if _Y()<5000 then
-					speed2=hikeolib.limit(speed2,-200,1000)
-				else
-					speed2=hikeolib.limit(speed2,-200,1500)
-				end
+				speed2=hikeolib.limit(speed2,-200,600)
 			else
 				speed2=hikeolib.limit(speed2,-200,500)
 			end
@@ -291,7 +287,7 @@ function MainSystem()
 		NetWork(1,HUD,15)
 	end
 	if hudlevel==2 then
-		hud_all(0,HUD,0.03,n,{x=0,y=0.08,col="FF00"})
+		hud_all(0,HUD,0.03,n,{x=0,y=0.08,col="FF00",range=2000})
 	end
 	if hudlevel>=1 then
 		basicmoniter3D(0,HUD,0.8,"FF00",0,0.08,{btlm,g=G,ammo=ammo,gear=mode})

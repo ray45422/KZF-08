@@ -68,3 +68,40 @@ function sminov_OnFrame()
 		sminov=0
 	end
 end
+function cloud()
+	if math.abs(LEN(wl1_m.lay,wl1_m.lax))>40 then
+		table.insert(kumo[1],1,{x=_X(WL1),y=_Y(WL1),z=_Z(WL1)})
+		if table.getn(kumo[1])>10 then
+			table.remove(kumo[1],11)
+		end
+	else
+		if table.getn(kumo[1])>0 then
+			table.remove(kumo[1],11)
+		end
+	end
+	if math.abs(LEN(wr1_m.lay,wr1_m.lax))>40 then
+		table.insert(kumo[2],1,{x=_X(WR1),y=_Y(WR1),z=_Z(WR1)})
+		if table.getn(kumo[2])>10 then
+			table.remove(kumo[2],11)
+		end
+	else
+		if table.getn(kumo[2])>0 then
+			table.remove(kumo[2],11)
+		end
+	end
+	_SETCOLOR(tonumber("FFFFFF",16))
+	for i,data in kumo[1] do
+		if i==1 then
+			_MOVE3D(data.x,data.y,data.z)
+		else
+			_LINE3D(data.x,data.y,data.z)
+		end
+	end
+	for i,data in kumo[2] do
+		if i==1 then
+			_MOVE3D(data.x,data.y,data.z)
+		else
+			_LINE3D(data.x,data.y,data.z)
+		end
+	end
+end

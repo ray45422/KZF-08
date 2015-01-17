@@ -41,7 +41,7 @@ function arm_ctrl()
 				if armament_select==i then
 					if miss_lunch[i][1]==1 then
 						miss_lunch[i][3]=1
-					else
+					elseif hudData.rock==2 then
 						miss_lunch[i]={1,n,0,0}
 						armament_select=selecter(armament_select+1,armament_num)
 						break
