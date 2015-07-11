@@ -18,6 +18,7 @@ function sminov_init()
 			Rader=ray.Rader:new(300,300)
 			Rader:Move(100,430)
 		end
+		ActivateRCWindow()
 	end
 end
 
