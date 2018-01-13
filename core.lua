@@ -39,7 +39,7 @@ function MainSystem()
 		if _KEYDOWN(13)>0 then
 			setlim=1-setlim
 		end
-		if _KEYDOWN(14)>0@and btlm==0 then
+		if _KEYDOWN(14)>0 and btlm==0 then
 			modea=1-modea
 		end
 		if _KEY(16)>0 then
